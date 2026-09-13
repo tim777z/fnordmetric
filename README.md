@@ -102,3 +102,24 @@ FnordMetric. If not, see <http://www.gnu.org/licenses/>.
   [2]: http://www.screenr.com/KiJs
   [3]: https://secure.travis-ci.org/paulasmuth/fnordmetric.png
   [4]: http://travis-ci.org/paulasmuth/fnordmetric
+
+## Getting Started
+
+### Prerequisites
+- C++ compiler
+- Make
+
+### Install
+```bash
+make
+```
+
+### Run
+```bash
+./fnordmetric-server
+```
+
+### Test
+```bash
+make test
+```
