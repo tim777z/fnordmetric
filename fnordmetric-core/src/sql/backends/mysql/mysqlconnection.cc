@@ -82,9 +82,8 @@ void MySQLConnection::connect(const util::URI& uri) {
 
     RAISE(
         kRuntimeError,
-        "invalid parameter for mysql:// URI: '%s=%s'",
-        param.first.c_str(),
-        param.second.c_str());
+        "invalid parameter for mysql:// URI: '%s' (value redacted)",
+        param.first.c_str());
   }
 
   connect(host, port, database, username, password);

@@ -11,6 +11,7 @@
 #include <fnordmetric/sql/backends/postgres/postgresconnection.h>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 namespace fnordmetric {
 namespace query {
@@ -79,9 +80,8 @@ void PostgresConnection::connect(const util::URI& uri) {
 
     RAISE(
         kRuntimeError,
-        "invalid parameter for postgres:// URI: '%s=%s'",
-        param.first.c_str(),
-        param.second.c_str());
+        "invalid parameter for postgres:// URI: '%s' (value redacted)",
+        param.first.c_str());
   }
 
   connect(host, port, database, username, password);
@@ -94,22 +94,24 @@ void PostgresConnection::connect(
     const std::string& username,
     const std::string& password) {
 #ifdef FNORD_ENABLE_POSTGRES
-  std::stringstream conn;
-  if (username.length())
-    conn << "user=" << username << " ";
-  if (password.length())
-  conn << "password=" << password << " ";
-  if (database.length())
-  conn << "dbname=" << database << " ";
+  // Build the connection using libpq's parameter API rather than concatenating
+  // an unescaped connection string, which could leak or mis-handle credentials.
+  std::string port_str = std::to_string(port);
+  const char* const keys[] = {
+      "hostaddr", "port", "dbname", "user", "password", nullptr};
+  const char* const values[] = {
+      host.c_str(),
+      port_str.c_str(),
+      database.empty() ? nullptr : database.c_str(),
+      username.empty() ? nullptr : username.c_str(),
+      password.empty() ? nullptr : password.c_str(),
+      nullptr};
 
-  conn << "hostaddr=" << host << " ";
-  conn << "port=" << port;
-
-  postgres_ = PQconnectdb(conn.str().c_str());
+  postgres_ = PQconnectdbParams(keys, values, 0);
   if (PQstatus(postgres_) != CONNECTION_OK) {
     RAISE(
       kRuntimeError,
-      "PQconnectdb() failed: %s\n",
+      "PQconnectdbParams() failed: %s\n",
       PQerrorMessage(postgres_));
   }
 #else
@@ -123,11 +125,25 @@ std::vector<std::string> PostgresConnection::describeTable(
   std::vector<std::string> columns;
 
 #ifdef FNORD_ENABLE_POSTGRES
-  // construct attribute names query
+  // construct attribute names query (escape the table name to avoid SQL injection)
+  if (table_name.empty()) {
+    RAISE(kRuntimeError, "describeTable: empty table name");
+  }
   std::stringstream query;
+#ifdef FNORD_ENABLE_POSTGRES
+  char* escaped = PQescapeIdentifier(postgres_, table_name.c_str(), table_name.size());
+  if (escaped == nullptr) {
+    RAISE(kRuntimeError, "PQescapeIdentifier failed: %s", PQerrorMessage(postgres_));
+  }
+  query << "select attname from pg_attribute join pg_class on attrelid = pg_class.oid where relname = ";
+  query << escaped;
+  PQfreemem(escaped);
+  query << " and attnum > 0";
+#else
   query << "select attname from pg_attribute join pg_class on attrelid = pg_class.oid where relname = '";
   query << table_name;
   query << "' and attnum > 0";
+#endif
   
   // run query
   PGresult* res = PQexec(postgres_, query.str().c_str());

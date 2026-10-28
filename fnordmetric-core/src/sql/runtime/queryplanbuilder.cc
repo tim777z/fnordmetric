@@ -187,11 +187,7 @@ bool QueryPlanBuilder::hasJoin(ASTNode* ast) const {
     return true;
   }
 
-  for (const auto& child : ast->getChildren()) {
-    //if (child->getType() == ASTNode::T_JOIN) {
-    //  return true;
-    //}
-  }
+  (void) ast;
 
   return false;
 }

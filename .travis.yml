@@ -1,4 +1,17 @@
-rvm: 1.9.3
-script: ./fnordmetric-core/run_specs.sh
-services:
-  - redis-server
+language: cpp
+dist: jammy
+compiler:
+  - gcc
+addons:
+  apt:
+    packages:
+      - cmake
+      - libpq-dev
+      - default-libmysqlclient-dev
+before_install:
+  - sudo apt-get update
+script:
+  - make
+  - make test
+notifications:
+  email: false

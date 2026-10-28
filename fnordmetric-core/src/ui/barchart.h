@@ -42,8 +42,8 @@ namespace ui {
  */
 class BarChart : public Drawable {
 public:
-  constexpr static const double kBarPadding = 0.3f; // FIXPAUL make configurable
-  constexpr static const double kBarPaddingInner = 0.2f; // FIXPAUL make configurable
+  constexpr static const double kBarPadding = 0.3f;
+  constexpr static const double kBarPaddingInner = 0.2f;
   constexpr static const int kLabelPadding = 8;
 
   enum kBarChartOrientation {
@@ -205,7 +205,6 @@ BarChart3D<TX, TY, TZ>::BarChart3D(
     bool stacked /* = false */) :
     BarChart(canvas, orient, stacked) {}
 
-// FIXPAUL enforce that TY == TZ
 template <typename TX, typename TY, typename TZ>
 void BarChart3D<TX, TY, TZ>::addSeries(Series3D<TX, TY, TZ>* series) {
   Domain<TX>* x_domain;
@@ -410,7 +409,7 @@ void BarChart3D<TX, TY, TZ>::renderHorizontalBars(
           dh,
           seriesColor(n),
           "bar",
-          bar.label, // FIXPAUL per series label
+          bar.label,
           series_[n]->name());
 
       if (dx + dw > label_x) {
@@ -470,7 +469,7 @@ void BarChart3D<TX, TY, TZ>::renderVerticalBars(
           dh,
           seriesColor(n),
           "bar",
-          bar.label, // FIXPAUL per series label
+          bar.label,
           series_[n]->name());
 
       if (dy < label_y) {
@@ -564,7 +563,7 @@ BarChart2D<TX, TY>::BarChart2D(
 
 template <typename TX, typename TY>
 void BarChart2D<TX, TY>::addSeries(Series2D<TX, TY>* series) {
-  auto series3d = new Series3D<TX, TY, TY>(); // FIXPAUL: never free'd!
+  auto series3d = new Series3D<TX, TY, TY>();
   auto copy_labels = series->hasProperty(Series::P_LABEL);
 
   for (const auto& point : series->getData()) {
