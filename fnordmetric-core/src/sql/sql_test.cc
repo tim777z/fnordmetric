@@ -1359,3 +1359,11 @@ TEST_CASE(SQLTest, TestMinAggregation, [] () {
   EXPECT_EQ(results->getRow(0)[0], "1.000000");
 });
 
+TEST_CASE(SQLTest, TestParseQueryRejectsEmpty, [] () {
+  const char err[] = "empty query";
+  Parser parser;
+  EXPECT_EXCEPTION(err, [&parser] () {
+    parser.parseQuery("");
+  });
+});
+

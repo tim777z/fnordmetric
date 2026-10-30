@@ -2,7 +2,32 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "${FNORDMETRIC_PORT:-8080}:8080"
+      - "8125:8125/udp"
+    environment:
+      FNORDMETRIC_DB_HOST: ${FNORDMETRIC_PG_HOST:-db}
+      FNORDMETRIC_DB_PORT: ${FNORDMETRIC_PG_PORT:-5432}
+      FNORDMETRIC_DB_NAME: ${FNORDMETRIC_PG_DATABASE:-fnordmetric}
+      FNORDMETRIC_DB_USER: ${FNORDMETRIC_PG_USER:-fnordmetric}
+      FNORDMETRIC_DB_PASSWORD: ${FNORDMETRIC_PG_PASSWORD:-change-me}
     volumes:
-      - .:/app
-    working_dir: /app
+      - fnordmetric-data:/data/fnordmetric
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${FNORDMETRIC_PG_USER:-fnordmetric}
+      POSTGRES_PASSWORD: ${FNORDMETRIC_PG_PASSWORD:-change-me}
+      POSTGRES_DB: ${FNORDMETRIC_PG_DATABASE:-fnordmetric}
+    ports:
+      - "${FNORDMETRIC_PG_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  fnordmetric-data:

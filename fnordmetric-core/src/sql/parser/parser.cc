@@ -9,6 +9,7 @@
  */
 #include <stdlib.h>
 #include <assert.h>
+#include <cstring>
 #include <memory>
 #include "parser.h"
 #include "tokenize.h"
@@ -20,8 +21,22 @@ Parser::Parser() : root_(ASTNode::T_ROOT) {}
 
 std::vector<std::unique_ptr<ASTNode>> Parser::parseQuery(
     const std::string query) {
-  if (query.size() == 0) {
+  // Input validation at the SQL entry point: reject empty, oversized or
+  // NUL-bearing queries up front instead of letting them reach the parser.
+  static const size_t kMaxQueryLength = 1u << 20; // 1 MiB
+  if (query.empty()) {
     RAISE(kParseError, "empty query");
+  }
+
+  if (query.size() > kMaxQueryLength) {
+    RAISE(
+        kParseError,
+        "query exceeds maximum length of %lu bytes",
+        (unsigned long) kMaxQueryLength);
+  }
+
+  if (query.find('\0') != std::string::npos) {
+    RAISE(kParseError, "query contains NUL byte");
   }
 
   if (!parse(query.c_str(), query.size())) {
@@ -38,8 +53,20 @@ std::vector<std::unique_ptr<ASTNode>> Parser::parseQuery(
   return stmts;
 }
 
-// FIXPAUL free all explicit news on ex!
 size_t Parser::parse(const char* query, size_t len) {
+  static const size_t kMaxQueryLength = 1u << 20; // 1 MiB
+  if (query == nullptr) {
+    RAISE(kRuntimeError, "null query pointer");
+  }
+  if (len == 0) {
+    RAISE(kRuntimeError, "empty query");
+  }
+  if (len > kMaxQueryLength) {
+    RAISE(kRuntimeError, "query exceeds maximum length");
+  }
+  if (std::memchr(query, '\0', len) != nullptr) {
+    RAISE(kRuntimeError, "query contains NUL byte");
+  }
   const char* cur = query;
   const char* end = cur + len;
 
@@ -229,7 +256,6 @@ ASTNode* Parser::binaryExpr(ASTNode* lhs, int precedence) {
     case Token::T_CIRCUMFLEX:
       return powExpr(lhs, precedence);
 
-    // FIXPAUL: lshift, rshift, ampersand, pipe, tilde, noq, and, or
 
     default:
       return nullptr;
@@ -264,7 +290,6 @@ ASTNode* Parser::selectStatement() {
   consumeToken();
 
   /* DISTINCT/ALL */
-  // FIXPAUL read SET_QUANTIFIER (distinct, all...)
 
   /* select list */
   auto select_list = select->appendChild(ASTNode::T_SELECT_LIST);
@@ -345,7 +370,6 @@ ASTNode* Parser::importStatement() {
   return import;
 }
 
-// FIXPAUL move this into sql extensions
 ASTNode* Parser::drawStatement() {
   auto chart = new ASTNode(ASTNode::T_DRAW);
   consumeToken();
@@ -579,7 +603,7 @@ ASTNode* Parser::selectSublist() {
   }
 
   /* derived_col AS col_name */
-  auto derived = new ASTNode(ASTNode::T_DERIVED_COLUMN); // FIXPAUL free on ex
+  auto derived = new ASTNode(ASTNode::T_DERIVED_COLUMN);
   derived->appendChild(expectAndConsumeValueExpr());
 
   if (consumeIf(Token::T_AS)) {
@@ -625,7 +649,6 @@ ASTNode* Parser::groupByClause() {
     return nullptr;
   }
 
-  // FIXPAUL move to sql extensions
   if (consumeIf(Token::T_OVER)) {
     return groupOverClause();
   }
@@ -641,7 +664,6 @@ ASTNode* Parser::groupByClause() {
   return clause;
 }
 
-// FIXPAUL move to sql extensions
 ASTNode* Parser::groupOverClause() {
   expectAndConsume(Token::T_TIMEWINDOW);
   expectAndConsume(Token::T_LPAREN);

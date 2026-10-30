@@ -1,0 +1,15 @@
+{
+  "name": "fnordmetric-webui",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "description": "FnordMetric web UI bundle builder (no runtime dependencies).",
+  "scripts": {
+    "build": "make",
+    "clean": "make clean",
+    "test": "echo 'no JS tests configured'"
+  },
+  "dependencies": {}
+}
