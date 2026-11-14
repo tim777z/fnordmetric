@@ -9,6 +9,34 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: fnordmetric
+          POSTGRES_PASSWORD: change-me
+          POSTGRES_DB: fnordmetric
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U fnordmetric -d fnordmetric"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: change-me
+          MYSQL_DATABASE: fnordmetric
+          MYSQL_USER: fnordmetric
+          MYSQL_PASSWORD: change-me
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost -ufnordmetric -pchange-me"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,10 +44,54 @@ jobs:
       - name: Install build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake libpq-dev default-libmysqlclient-dev
+          sudo apt-get install -y build-essential cmake libpq-dev default-libmysqlclient-dev lcov clang-format clang-tidy
 
       - name: Build
         run: make
 
       - name: Test
         run: make test
+
+      - name: Coverage
+        run: make coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: fnordmetric-core/build/cmake/coverage-report
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install clang tools
+        run: sudo apt-get update && sudo apt-get install -y clang-format clang-tidy
+
+      - name: clang-format (dry run)
+        run: |
+          find fnordmetric-core/src -type f \( -name '*.cc' -o -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) -print0 \
+            | xargs -0 clang-format --dry-run --Werror
+
+      - name: clang-tidy
+        run: |
+          find fnordmetric-core/src -type f \( -name '*.cc' -o -name '*.cpp' \) -print0 \
+            | xargs -0 -n1 clang-tidy -p fnordmetric-core/build/cmake 2>/dev/null || true
+
+  webui-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: fnordmetric-webui/.nvmrc
+
+      - name: npm audit
+        working-directory: fnordmetric-webui
+        run: npm audit --audit-level=high || true

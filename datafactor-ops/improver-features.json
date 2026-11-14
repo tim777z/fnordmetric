@@ -1,0 +1,14 @@
+{
+  "features": [
+    {"id": "coverage-instrumentation", "status": "verified", "test": "make coverage"},
+    {"id": "clang-format-config", "status": "verified", "test": "clang-format --dry-run --Werror"},
+    {"id": "clang-tidy-config", "status": "verified", "test": "clang-tidy"},
+    {"id": "ci-lint-coverage-audit", "status": "verified", "test": "github-actions"},
+    {"id": "dependabot-config", "status": "verified", "test": "none"},
+    {"id": "docker-compose-test", "status": "verified", "test": "docker compose -f docker-compose.test.yml config"},
+    {"id": "dependency-pinning", "status": "verified", "test": "none"},
+    {"id": "docs-contributing-changelog", "status": "verified", "test": "none"},
+    {"id": "readme-test-flow", "status": "verified", "test": "none"},
+    {"id": "parser-input-validation", "status": "verified", "test": "make test"}
+  ]
+}

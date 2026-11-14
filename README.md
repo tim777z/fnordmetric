@@ -48,6 +48,17 @@ make test
 Runs the C++ unit test suites (`SQLTest`, `UITest`, and the smaller component
 suites). The command exits non-zero on any failure.
 
+For backend-dependent tests, bring up ephemeral databases first (no local
+PostgreSQL/MySQL install required):
+
+```bash
+docker compose -f docker-compose.test.yml up -d
+make test
+```
+
+See `DEPENDENCIES.md` for pinned system dependency versions and `SECURITY.md`
+for the supported build/test workflow.
+
 ## Run the server
 
 ```bash

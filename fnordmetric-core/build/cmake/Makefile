@@ -23,6 +23,14 @@ assets:
 test: all
 	@find target/tests -iname "test-*" | while read t; do (cd ../../ && build/cmake/$$t) || exit 1; done
 
+coverage: assets
+	mkdir -p target-coverage/tests
+	mkdir -p stage/src
+	test -e stage/src/fnordmetric || ln -s ../../../../src stage/src/fnordmetric || true
+	(cd target-coverage && cmake .. -DCMAKE_BUILD_TYPE=Debug -DENABLE_TESTS=ON -DCOVERAGE=ON && make)
+	@find target-coverage/tests -iname "test-*" | while read t; do (cd ../../ && build/cmake/$$t) || exit 1; done
+	@command -v lcov >/dev/null 2>&1 && lcov --capture --directory target-coverage --output-file coverage.info && genhtml coverage.info --output-directory coverage-report || echo "lcov not installed; skipping report generation"
+
 clean:
 	rm -rf target stage
 

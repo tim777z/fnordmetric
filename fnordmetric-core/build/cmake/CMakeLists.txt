@@ -12,6 +12,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
 project(fnordmetric)
 
 option(ENABLE_TESTS "Build unit tests [default: off]" OFF)
+option(COVERAGE "Enable gcov/lcov coverage instrumentation [default: off]" OFF)
+
+if(COVERAGE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g --coverage")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --coverage")
+endif()
 
 set(FNORDMETRIC_SOURCES
     stage/src/fnordmetric/cli/cli.cc

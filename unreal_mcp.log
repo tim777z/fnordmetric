@@ -1,4 +1,4 @@
-2026-11-08 04:59:00,845 - mcp.server.lowlevel.server - DEBUG - [server.py:145] - Initializing server 'UnrealMCP'
+﻿2026-11-08 04:59:00,845 - mcp.server.lowlevel.server - DEBUG - [server.py:145] - Initializing server 'UnrealMCP'
 2026-11-08 04:59:00,847 - mcp.server.lowlevel.server - DEBUG - [server.py:384] - Registering handler for ListToolsRequest
 2026-11-08 04:59:00,847 - mcp.server.lowlevel.server - DEBUG - [server.py:406] - Registering handler for CallToolRequest
 2026-11-08 04:59:00,847 - mcp.server.lowlevel.server - DEBUG - [server.py:252] - Registering handler for ListResourcesRequest

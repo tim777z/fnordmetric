@@ -15,6 +15,9 @@ install:
 test:
 	(cd fnordmetric-core && make test)
 
+coverage:
+	(cd fnordmetric-core && make coverage)
+
 clean:
 	(cd fnordmetric-webui && make clean)
 	(cd fnordmetric-core && make clean)
