@@ -19,6 +19,9 @@ devserver: build
 test:
 	(cd build/cmake && make test)
 
+coverage:
+	(cd build/cmake && make coverage)
+
 clean:
 	(cd build/cmake && make clean)
 	rm -rf build/test/tmp*

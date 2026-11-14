@@ -2,13 +2,18 @@
 
 ## C++ core
 
-Build dependencies (install via the system package manager):
+Build dependencies (install via the system package manager). Pinned versions
+used by CI and the Docker image:
 
-- GCC or Clang with C++11 support
-- CMake >= 2.6
-- Make
-- libpq >= 9.0 (optional, enables the PostgreSQL backend)
-- libmysqlclient (optional, enables the MySQL backend)
+- GCC >= 11 or Clang >= 14 with C++11 support
+- CMake >= 3.16
+- Make >= 4.3
+- libpq >= 14.0 (optional, enables the PostgreSQL backend)
+- libmysqlclient >= 8.0 (optional, enables the MySQL backend)
+
+Feature macros are detected at configure time (`FNORD_ENABLE_POSTGRES`,
+`FNORD_ENABLE_MYSQL`). CI installs `libpq-dev` and `default-libmysqlclient-dev`
+on ubuntu-latest, which satisfy the pins above.
 
 Optional feature macros are detected at configure time (`FNORD_ENABLE_POSTGRES`,
 `FNORD_ENABLE_MYSQL`).

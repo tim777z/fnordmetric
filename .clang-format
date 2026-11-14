@@ -1,0 +1,14 @@
+---
+# FnordMetric C++ formatting standard.
+# Based on Google style with the project's existing 2-space indentation.
+BasedOnStyle: Google
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+ColumnLimit: 100
+PointerAlignment: Left
+ReferenceAlignment: Left
+AllowShortFunctionsOnASingleLine: Inline
+SortIncludes: true
+IncludeBlocks: Regroup
+---

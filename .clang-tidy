@@ -1,0 +1,11 @@
+---
+# FnordMetric C++ static analysis configuration.
+Checks: >
+  bugprone-*,
+  readability-*,
+  -readability-magic-numbers,
+  -readability-identifier-length,
+  cppcoreguidelines-pro-type-reinterpret-cast
+WarningsAsErrors: ''
+HeaderFilterRegex: 'fnordmetric-core/(src|build/cmake/stage/src)/.*'
+---
