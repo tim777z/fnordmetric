@@ -160,7 +160,9 @@ include_directories(stage/assets)
 if(APPLE)
   set(CMAKE_CXX_FLAGS "-std=c++0x -stdlib=libc++ ${CMAKE_CXX_FLAGS}")
 else()
-  set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
+  # 2014-era sources relied on transitive includes removed in GCC 13+; force-include
+# fixed-width int types so the legacy tree configures on modern toolchains.
+set(CMAKE_CXX_FLAGS "-std=c++0x -include cstdint -include cstddef ${CMAKE_CXX_FLAGS}")
 endif()
 
 add_executable(fnordmetric-cli ${FNORDMETRIC_SOURCES} stage/src/fnordmetric/cli.cc)
