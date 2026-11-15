@@ -199,58 +199,58 @@ if(ENABLE_TESTS)
   add_library(fnord SHARED ${FNORDMETRIC_SOURCES})
   target_link_libraries(fnord m ${MYSQL_CLIENT_LIBS})
 
-  add_executable(tests/test-sql stage/src/fnordmetric/sql/sql_test.cc)
-  target_link_libraries(tests/test-sql fnord)
+  add_executable(test-sql stage/src/fnordmetric/sql/sql_test.cc)
+  target_link_libraries(test-sql fnord)
 
-  add_executable(tests/test-ui
+  add_executable(test-ui
        stage/src/fnordmetric/ui/ui_test.cc)
-  target_link_libraries(tests/test-ui fnord)
+  target_link_libraries(test-ui fnord)
 
-  add_executable(tests/test-input-stream
+  add_executable(test-input-stream
       stage/src/fnordmetric/util/inputstream_test.cc)
-  target_link_libraries(tests/test-input-stream fnord)
+  target_link_libraries(test-input-stream fnord)
 
-  add_executable(tests/test-uri
+  add_executable(test-uri
       stage/src/fnordmetric/util/uri_test.cc)
-  target_link_libraries(tests/test-uri fnord)
+  target_link_libraries(test-uri fnord)
 
-  add_executable(tests/test-http
+  add_executable(test-http
       stage/src/fnordmetric/http/http_test.cc)
-  target_link_libraries(tests/test-http fnord)
+  target_link_libraries(test-http fnord)
 
-  target_link_libraries(tests/test-uri fnord)
-  add_executable(tests/test-fnv
+  target_link_libraries(test-uri fnord)
+  add_executable(test-fnv
       stage/src/fnordmetric/util/fnv_test.cc)
-  target_link_libraries(tests/test-fnv fnord)
+  target_link_libraries(test-fnv fnord)
 
-  add_executable(tests/test-csv-backend
+  add_executable(test-csv-backend
       stage/src/fnordmetric/sql/backends/csv/csvbackend_test.cc)
-  target_link_libraries(tests/test-csv-backend fnord)
+  target_link_libraries(test-csv-backend fnord)
 
-  add_executable(tests/test-pagemanager
+  add_executable(test-pagemanager
       stage/src/fnordmetric/io/pagemanager_test.cc)
-  target_link_libraries(tests/test-pagemanager fnord)
+  target_link_libraries(test-pagemanager fnord)
 
-  add_executable(tests/test-sstable
+  add_executable(test-sstable
       stage/src/fnordmetric/sstable/sstable_test.cc)
-  target_link_libraries(tests/test-sstable fnord)
+  target_link_libraries(test-sstable fnord)
 
-  add_executable(tests/test-sql-extensions
+  add_executable(test-sql-extensions
       stage/src/fnordmetric/sql_extensions/sql_extensions_test.cc)
-  target_link_libraries(tests/test-sql-extensions fnord)
+  target_link_libraries(test-sql-extensions fnord)
 
-  add_executable(tests/test-query
+  add_executable(test-query
       stage/src/fnordmetric/query/query_test.cc)
-  target_link_libraries(tests/test-query fnord)
+  target_link_libraries(test-query fnord)
 
-  add_executable(tests/test-cli stage/src/fnordmetric/cli/cli_test.cc)
-  target_link_libraries(tests/test-cli fnord)
+  add_executable(test-cli stage/src/fnordmetric/cli/cli_test.cc)
+  target_link_libraries(test-cli fnord)
 
-  add_executable(tests/test-statsd
+  add_executable(test-statsd
       stage/src/fnordmetric/metricdb/statsd_test.cc)
-  target_link_libraries(tests/test-statsd fnord)
+  target_link_libraries(test-statsd fnord)
 
-  add_executable(tests/test-disk-backend
+  add_executable(test-disk-backend
       stage/src/fnordmetric/metricdb/backends/disk/diskbackend_test.cc)
-  target_link_libraries(tests/test-disk-backend fnord)
+  target_link_libraries(test-disk-backend fnord)
 endif()
