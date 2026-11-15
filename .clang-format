@@ -11,4 +11,3 @@ ReferenceAlignment: Left
 AllowShortFunctionsOnASingleLine: Inline
 SortIncludes: true
 IncludeBlocks: Regroup
----
