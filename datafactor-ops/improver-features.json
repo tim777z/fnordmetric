@@ -9,6 +9,7 @@
     {"id": "dependency-pinning", "status": "verified", "test": "none"},
     {"id": "docs-contributing-changelog", "status": "verified", "test": "none"},
     {"id": "readme-test-flow", "status": "verified", "test": "none"},
-    {"id": "parser-input-validation", "status": "verified", "test": "make test"}
+    {"id": "parser-input-validation", "status": "verified", "test": "make test"},
+    {"id": "webui-xss-hardening", "status": "verified", "test": "static review"}
   ]
 }

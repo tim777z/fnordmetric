@@ -5,7 +5,10 @@
 # the terms of the GNU General Public License v3.0. You should have received a
 # copy of the GNU General Public License along with this program. If not, see
 # <http://www.gnu.org/licenses/>.
-cmake_minimum_required(VERSION 2.6)
+# Ubuntu 24.04+ ships CMake 3.28+/4.x, which errors on compatibility with
+# CMake < 3.5. The 3.16 floor matches DEPENDENCIES.md and the policies the
+# build relies on.
+cmake_minimum_required(VERSION 3.16)
 include(FindPkgConfig)
 include(CheckIncludeFile)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/") 
