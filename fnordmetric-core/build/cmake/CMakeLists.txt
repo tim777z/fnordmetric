@@ -162,7 +162,7 @@ if(APPLE)
 else()
   # 2014-era sources relied on transitive includes removed in GCC 13+; force-include
 # fixed-width int types so the legacy tree configures on modern toolchains.
-set(CMAKE_CXX_FLAGS "-std=c++0x -include cstdint -include cstddef ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-std=c++0x -include cstdint -include cstddef -include ctime -include cstdlib -include cstring ${CMAKE_CXX_FLAGS}")
 endif()
 
 add_executable(fnordmetric-cli ${FNORDMETRIC_SOURCES} stage/src/fnordmetric/cli.cc)
