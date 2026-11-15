@@ -196,6 +196,9 @@ endif()
 configure_file(config.h.in config.h)
 
 if(ENABLE_TESTS)
+  # CMake 4 removed '/' in target names; executables land in target/tests so
+  # the 'find target/tests -iname test-*' discovery keeps working.
+  set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/tests)
   add_library(fnord SHARED ${FNORDMETRIC_SOURCES})
   target_link_libraries(fnord m ${MYSQL_CLIENT_LIBS})
 
