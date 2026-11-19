@@ -15,9 +15,6 @@ Feature macros are detected at configure time (`FNORD_ENABLE_POSTGRES`,
 `FNORD_ENABLE_MYSQL`). CI installs `libpq-dev` and `default-libmysqlclient-dev`
 on ubuntu-latest, which satisfy the pins above.
 
-Optional feature macros are detected at configure time (`FNORD_ENABLE_POSTGRES`,
-`FNORD_ENABLE_MYSQL`).
-
 ## Web UI
 
 `fnordmetric-webui` is a plain JavaScript bundle assembled with `make`; it has

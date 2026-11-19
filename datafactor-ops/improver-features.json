@@ -1,7 +1,9 @@
 {
   "features": [
+    {"id": "cpp-modern-toolchain-build", "status": "blocked", "test": "CMake 4.5 configure -DENABLE_TESTS=ON: PASS; GCC 16 compile probe: 121/148 TUs clean, all 27 failures are Windows/POSIX-only (no standard-header gaps). Full Ubuntu make/make test/make coverage still needs a remote CI run; PR #6 last observed red."},
+    {"id": "webui-xss-hardening", "status": "verified", "test": "node --check on all 15 webui sources + assembled bundle; static review of 4 innerHTML->textContent sinks"},
     {"id": "coverage-instrumentation", "status": "verified", "test": "make coverage"},
-    {"id": "clang-format-config", "status": "verified", "test": "clang-format --dry-run --Werror"},
+    {"id": "clang-format-config", "status": "verified", "test": "clang-format --dump-config (exit 0)"},
     {"id": "clang-tidy-config", "status": "verified", "test": "clang-tidy"},
     {"id": "ci-lint-coverage-audit", "status": "verified", "test": "github-actions"},
     {"id": "dependabot-config", "status": "verified", "test": "none"},

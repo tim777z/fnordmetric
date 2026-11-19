@@ -10,6 +10,7 @@
 #ifndef _FNORD_SSTABLE_INDEX_H
 #define _FNORD_SSTABLE_INDEX_H
 #include <stdlib.h>
+#include <stdint.h>
 #include <string>
 #include <vector>
 #include <memory>

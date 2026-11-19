@@ -140,7 +140,10 @@ FnordMetric.util.Loader = function() {
 
 
 FnordMetric.util.displayErrorMessage = function(elem, msg) {
-  elem.innerHTML = "<div>" + msg + "</div>"; // XSS!
+  var container = document.createElement("div");
+  container.textContent = String(msg == null ? "" : msg);
+  elem.innerHTML = "";
+  elem.appendChild(container);
 }
 
 

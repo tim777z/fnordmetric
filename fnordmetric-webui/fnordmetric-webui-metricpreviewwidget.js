@@ -106,7 +106,7 @@ FnordMetric.util.MetricPreviewWidget = function(viewport, query_params) {
   function renderError(message) {
     var error_box = document.createElement("div");
     error_box.className = "error_box";
-    error_box.innerHTML = message;
+    error_box.textContent = String(message == null ? "" : message);
     chart_container.innerHTML = "";
     chart_container.appendChild(error_box);
   }
