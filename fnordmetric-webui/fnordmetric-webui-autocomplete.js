@@ -30,7 +30,10 @@ FnordMetric.util.Autocomplete = function(elem, input, callback) {
     list_items = [];
     items.map(function(item) {
       var li = document.createElement("li");
-      li.innerHTML = "<a href='#'>"+item+"</href>";
+      var link = document.createElement("a");
+      link.href = "#";
+      link.textContent = String(item == null ? "" : item);
+      li.appendChild(link);
       list.appendChild(li);
       list_items.push(li);
 
