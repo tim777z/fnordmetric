@@ -59,13 +59,14 @@ void EXPECT_EQ(T1 left, T2 right) {
       bool raised = false; \
       try { \
         L(); \
-      } catch (fnordmetric::util::RuntimeException e) { \
+      } catch (const fnordmetric::util::RuntimeException& e) { \
         raised = true; \
-        auto msg = e.getMessage().c_str(); \
-        if (strcmp(msg, E) != 0) { \
+        /* Keep the message alive: c_str() of a temporary dangles. */ \
+        const std::string msg = e.getMessage(); \
+        if (msg != std::string(E)) { \
           RAISE( \
               kExpectationFailed, \
-              "excepted exception '%s' but got '%s'", E, msg); \
+              "excepted exception '%s' but got '%s'", E, msg.c_str()); \
         } \
       } \
       if (!raised) { \
