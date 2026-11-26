@@ -17,4 +17,7 @@ grouped by date.
 ### Changed
 - README documents the isolated test flow and dependency pinning.
 - `DEPENDENCIES.md` lists pinned system dependency versions.
+- `EXPECT_EXCEPTION` keeps exception messages alive while formatting diagnostics,
+  removing a dangling-pointer failure on modern GCC and restoring CI test signal.
+- Added `test-unittest` regression coverage for exception-match diagnostics.
 ---

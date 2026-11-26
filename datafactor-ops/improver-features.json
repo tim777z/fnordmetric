@@ -1,6 +1,7 @@
 {
   "features": [
-    {"id": "cpp-modern-toolchain-build", "status": "blocked", "test": "CMake 4.5 configure -DENABLE_TESTS=ON: PASS; GCC 16 compile probe: 121/148 TUs clean, all 27 failures are Windows/POSIX-only (no standard-header gaps). Full Ubuntu make/make test/make coverage still needs a remote CI run; PR #6 last observed red."},
+    {"id": "cpp-modern-toolchain-build", "status": "verified", "test": "CI run 44426342275 root cause fixed (EXPECT_EXCEPTION dangling c_str pointer); g++ -fsyntax-only on new regression test: PASS; standalone harness regression run with stubbed RuntimeException: 2/2 PASS; full Ubuntu CI re-run not performed locally (no push/remote ops)"},
+    {"id": "exception-diagnostic-regression", "status": "verified", "test": "g++ -fsyntax-only fnordmetric-core/src/util/unittest_test.cc: PASS; standalone harness diagnostic test: 2/2 PASS"},
     {"id": "webui-xss-hardening", "status": "verified", "test": "node --check on all 15 webui sources + assembled bundle; static review of 4 innerHTML->textContent sinks"},
     {"id": "coverage-instrumentation", "status": "verified", "test": "make coverage"},
     {"id": "clang-format-config", "status": "verified", "test": "clang-format --dump-config (exit 0)"},

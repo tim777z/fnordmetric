@@ -45,8 +45,8 @@ sudo make install
 make test
 ```
 
-Runs the C++ unit test suites (`SQLTest`, `UITest`, and the smaller component
-suites). The command exits non-zero on any failure.
+Runs the C++ unit test suites (`SQLTest`, `UITest`, `UnittestTest`, and the
+smaller component suites). The command exits non-zero on any failure.
 
 For backend-dependent tests, bring up ephemeral databases first (no local
 PostgreSQL/MySQL install required):

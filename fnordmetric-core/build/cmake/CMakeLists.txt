@@ -25,7 +25,6 @@ endif()
 set(FNORDMETRIC_SOURCES
     stage/src/fnordmetric/cli/cli.cc
     stage/src/fnordmetric/cli/flagparser.cc
-    stage/src/fnordmetric/cli/cli.cc
     stage/src/fnordmetric/io/acceptor.cc
     stage/src/fnordmetric/io/eventloop.cc
     stage/src/fnordmetric/io/file.cc
@@ -251,6 +250,9 @@ if(ENABLE_TESTS)
 
   add_executable(test-cli stage/src/fnordmetric/cli/cli_test.cc)
   target_link_libraries(test-cli fnord)
+
+  add_executable(test-unittest stage/src/fnordmetric/util/unittest_test.cc)
+  target_link_libraries(test-unittest fnord)
 
   add_executable(test-statsd
       stage/src/fnordmetric/metricdb/statsd_test.cc)
